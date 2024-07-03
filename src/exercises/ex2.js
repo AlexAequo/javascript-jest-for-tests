@@ -1,8 +1,9 @@
-const clickMeButton = document.getElementById('click-me-button');
-const message = document.getElementById('message');
+// ex2.js
+const showMessage = () => {
+  const message = document.getElementById('message');
+  if (message) {
+      message.textContent = 'Button clicked!';
+  }
+};
 
-function showMessage() {
-  // Your code here: Change the text content of the 'message' paragraph.
-}
-
-clickMeButton.addEventListener('click', showMessage);
+module.exports = { showMessage };

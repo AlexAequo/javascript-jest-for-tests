@@ -1,12 +1,13 @@
-// script.js
-const addButton = document.getElementById('add-class-button');
-const element = document.getElementById('element');
-
 function addClassToElement() {
-  // Your code here: Add a CSS class to the 'element' div.
+  const element = document.getElementById('element');
+  if (element) {
+    element.classList.add('new-class');
+  }
 }
 
-addButton.addEventListener('click', addClassToElement);
+const addButton = document.getElementById('add-class-button');
+if (addButton) {
+  addButton.addEventListener('click', addClassToElement);
+}
 
-
-
+module.exports = { addClassToElement };
