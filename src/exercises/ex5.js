@@ -1,6 +1,9 @@
-const hoverArea = document.getElementById('hover-area');
-const interactionResult = document.getElementById('interaction-result');
+// src/exercises/ex5.js
 
-hoverArea.addEventListener('mouseover', () => {
-  // Your code here: Update the text content when the user hovers over the area.
-});
+export function hoverHandler(interactionResult, isHovering) {
+  if (isHovering) {
+    interactionResult.setTextContent('You are hovering over the area!');
+  } else {
+    interactionResult.setTextContent('Hover over the area.');
+  }
+}

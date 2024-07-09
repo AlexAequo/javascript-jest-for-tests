@@ -1,31 +1,30 @@
-/* EXAMPLE OF AN API REQUEST */
+// src/exercises/ex4.js
+import axios from 'axios'; // Importe axios, une bibliothèque pour effectuer des requêtes HTTP
 
-/*
-let longitude = 44.83; // Bordeaux longitude
-let latitude = -0.57; // Bordeaux latitude
-let api_key = '891fcaaa0f613df11046ed15bd1a4607'; // Teacher's API Key
-let api_url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${api_key}`; // API URL
-
-const getWeather = () => {
-  axios.get(api_url)
-  .then((response)=>console.log(response.data.main.temp - 273.15))
-  .catch((err)=> console.log(err))
-}
-getWeather();
-*/
-
-
-
-
+// Fonction asynchrone pour récupérer les données de l'API
 export const fetchData = async () => {
-    // Your code here: Implement an API request (e.g., fetch data from a fictional API).
-  };
-  
-  // script.js
-  import { fetchData } from './ex4';
-  
-  function displayData() {
-    // Your code here: Fetch and display data from the API using fetchData.
+  try {
+    const response = await axios.get('https://jsonplaceholder.typicode.com/posts/1'); // Effectue une requête GET à l'URL spécifiée
+    return response.data; // Retourne les données de la réponse de l'API
+  } catch (error) {
+    console.error('Error fetching data:', error); // Affiche une erreur si la requête échoue
+    throw error; // Lance à nouveau l'erreur pour la gérer à un niveau supérieur si nécessaire on ne sait jamais ^^
   }
-  
-  document.addEventListener('DOMContentLoaded', displayData);
+};
+
+// Fonction asynchrone pour afficher les données récupérées dans le DOM (j'aime pas le DOM)
+export const displayData = async () => {
+  try {
+    const data = await fetchData(); // Appelle la fonction fetchData pour obtenir les données
+    const container = document.createElement('div'); // Crée un élément <div> pour contenir les données
+    container.textContent = JSON.stringify(data); // Convertit les données en chaîne JSON et les assigne au contenu textuel de la <div>
+    document.body.appendChild(container); // Ajoute la <div> au corps du document HTML pour afficher les données
+  } catch (error) {
+    console.error('Error displaying data:', error); // Affiche une erreur si l'affichage des données échoue
+  }
+};
+
+// Ajoute un écouteur d'événement pour DOMContentLoaded
+if (typeof document !== 'undefined') { // Vérifie si l'environnement supporte le document (typiquement le navigateur)
+  document.addEventListener('DOMContentLoaded', displayData); // Attache l'événement DOMContentLoaded à la fonction displayData
+}
