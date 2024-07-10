@@ -1,18 +1,22 @@
 // src/exercises/ex4.js
-import axios from 'axios'; // Importe axios, une bibliothèque pour effectuer des requêtes HTTP
+import axios from 'axios';
 
-// Fonction asynchrone pour récupérer les données de l'API
+// Fonction asynchrone pour récupérer les données de l'API OpenWeatherMap
 export const fetchData = async () => {
+  const apiKey = '1db3cf629ed34b77854175aa24be064d'; // Clé API pour OpenWeatherMap
+  const city = 'Pordic'; // Ville pour laquelle nous voulons obtenir les données météo
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
   try {
-    const response = await axios.get('https://jsonplaceholder.typicode.com/posts/1'); // Effectue une requête GET à l'URL spécifiée
+    const response = await axios.get(url); // Effectue une requête GET à l'URL spécifiée
     return response.data; // Retourne les données de la réponse de l'API
   } catch (error) {
     console.error('Error fetching data:', error); // Affiche une erreur si la requête échoue
-    throw error; // Lance à nouveau l'erreur pour la gérer à un niveau supérieur si nécessaire on ne sait jamais ^^
+    throw error; // Lance à nouveau l'erreur pour la gérer à un niveau supérieur si nécessaire
   }
 };
 
-// Fonction asynchrone pour afficher les données récupérées dans le DOM (j'aime pas le DOM)
+// Fonction asynchrone pour afficher les données récupérées dans le DOM
 export const displayData = async () => {
   try {
     const data = await fetchData(); // Appelle la fonction fetchData pour obtenir les données

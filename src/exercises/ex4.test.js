@@ -1,6 +1,6 @@
-// src/exercises/ex4.test.js
+// src/exercises/ex4.test.js 
 
-// Importe axios (librairie JS) pour effectuer les requêtes HTTP et MockAdapter pour simuler les réponses d'axios
+// Importe axios (librairie JS isomorphique) pour effectuer les requêtes HTTP et MockAdapter pour simuler les réponses d'axios
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
@@ -29,22 +29,36 @@ describe('fetchData', () => {
   // Premier test : vérifie que fetchData récupère les données avec succès
   it('should fetch data successfully', async () => {
     // Données simulées que l'API devrait retourner
-    const mockData = { userId: 1, id: 1, title: 'Mock Title', body: 'Mock body content' };
+    const mockData = {
+      weather: [{ description: 'clear sky' }],
+      main: { temp: 293.15 },
+      name: 'Pordic'
+    };
 
     // Configure MockAdapter pour répondre avec un statut 200 et les données simulées
-    mock.onGet('https://jsonplaceholder.typicode.com/posts/1').reply(200, mockData);
+    const apiKey = '1db3cf629ed34b77854175aa24be064d';
+    const city = 'Pordic';
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+    mock.onGet(url).reply(200, mockData);
 
     // Appelle la fonction fetchData et attend la résolution de la promesse
     const data = await fetchData();
 
-    // Vérifie que les données retournées par fetchData correspondent aux données simulées
-    expect(data).toEqual(mockData);
+    // Vérifie que les données retournées par fetchData contiennent les clés 'weather', 'main', et 'name'
+    expect(data).toHaveProperty('weather');
+    expect(data.weather[0]).toHaveProperty('description');
+    expect(data).toHaveProperty('main');
+    expect(data.main).toHaveProperty('temp');
+    expect(data).toHaveProperty('name', 'Pordic');
   });
 
   // Deuxième test : vérifie que fetchData lance une erreur si la requête échoue
   it('should throw an error if the fetch fails', async () => {
     // Configure MockAdapter pour répondre avec un statut 500 (erreur serveur)
-    mock.onGet('https://jsonplaceholder.typicode.com/posts/1').reply(500);
+    const apiKey = '1db3cf629ed34b77854175aa24be064d';
+    const city = 'Pordic';
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+    mock.onGet(url).reply(500);
 
     // Attend que fetchData lance une erreur (rejette la promesse avec un message d'erreur spécifique)
     await expect(fetchData()).rejects.toThrow('Request failed with status code 500');
